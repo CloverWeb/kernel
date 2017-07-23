@@ -1,0 +1,23 @@
+{
+  "name": "joking/kernel",
+  "description": "kernel",
+  "minimum-stability": "dev",
+  "version": "0.2",
+  "license": "joking",
+  "authors": [
+    {
+      "name": "joking",
+      "email": "370546391@qq.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Joking\\Kernel\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.1.6",
+    "nikic/fast-route": "v1.2.0",
+    "filp/whoops": "2.1.9"
+  }
+}
