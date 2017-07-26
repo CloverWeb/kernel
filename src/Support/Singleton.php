@@ -14,6 +14,9 @@ abstract class Singleton {
 
     protected static $instances = [];
 
+    //按需加载
+    private $parameters = [];
+
     /**
      * @return $this
      */
@@ -25,5 +28,23 @@ abstract class Singleton {
 
         static::$instances[$className] = Factory::instance($className);
         return static::$instances[$className];
+    }
+
+    public function __get($name) {
+        if (isset($this->parameters[$name])) {
+            return $this->parameters[$name];
+        }
+
+        $method = 'get' . ucfirst($name);
+        if (method_exists($this, $method)) {
+            $this->parameters[$name] = call_user_func([$this, $method]);
+            return $this->parameters[$name];
+        }
+
+        return null;
+    }
+
+    public function __isset($name) {
+        return isset($this->parameters[$name]);
     }
 }

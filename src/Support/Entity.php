@@ -9,10 +9,45 @@ namespace Joking\Kernel\Support;
 
 class Entity implements \ArrayAccess {
 
-    protected $parameters = [];
+    private $parameters = [];
 
     public function __construct($parameters = []) {
         $this->parameters = array_merge($this->parameters, $parameters);
+    }
+
+
+    public function get($key, $default = null) {
+        return isset($this->parameters[$key]) ? $this->parameters[$key] : $default;
+    }
+
+    /**
+     * Sets a parameter by name.
+     *
+     * @param string $key The key
+     * @param mixed $value The value
+     */
+    public function set($key, $value) {
+        $this->parameters[$key] = $value;
+    }
+
+    /**
+     * Returns true if the parameter is defined.
+     *
+     * @param string $key The key
+     *
+     * @return bool true if the parameter exists, false otherwise
+     */
+    public function has($key) {
+        return array_key_exists($key, $this->parameters);
+    }
+
+    /**
+     * Removes a parameter.
+     *
+     * @param string $key The key
+     */
+    public function remove($key) {
+        unset($this->parameters[$key]);
     }
 
     public function all() {

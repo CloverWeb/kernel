@@ -1,6 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: Administrator
  * Date: 2017/7/22
  * Time: 0:31
@@ -9,6 +8,7 @@
 namespace Joking\Kernel\Route;
 
 
+use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 use Joking\Kernel\Functions\Factory;
@@ -22,14 +22,21 @@ class FastRoute {
      */
     protected static $routeCollector = [];
 
-    public function dispatch($url, $method) {
+    public function dispatch($method, $url) {
         $dispatcher = simpleDispatcher(function (RouteCollector $route) {
             foreach (static::$routeCollector as $url => $entity) {
                 $route->addRoute($entity->method, $url, $entity);
             }
         });
 
-        return $dispatcher->dispatch($method, $url);
+        $routeResult = $dispatcher->dispatch($method, $url);
+        $status = array_shift($routeResult);
+        if ($status == Dispatcher::FOUND) {
+            $routeResult[0]->params = $routeResult[1];
+            return $routeResult[0];
+        }
+
+        throw new RouteException($status);
     }
 
     /**
@@ -102,6 +109,20 @@ class FastRoute {
 
     public function put($url, $handle) {
         return $this->addRoute('PUT', $url, $handle);
+    }
+
+    /**
+     * 通过路由名称获取路由的实体类
+     * @param $name
+     * @return RouteEntity|null
+     */
+    public function getRoute($name) {
+        foreach (static::$routeCollector as $value) {
+            if (isset($value->name) && $value->name == $name) {
+                return $value;
+            }
+        }
+        return null;
     }
 
     protected function disposeUrl($url) {

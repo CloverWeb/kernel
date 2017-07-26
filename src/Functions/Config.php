@@ -1,6 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: Administrator
  * Date: 2017/7/23
  * Time: 1:59
@@ -13,11 +12,7 @@ use Joking\Kernel\Support\Singleton;
 
 class Config extends Singleton {
 
-    protected $config = ['name' => [
-        'class' => [
-            'haha' => 'this is haha'
-        ]
-    ], 'sss' => 222];
+    protected $config = [];
 
     public function get($name, $default = null) {
         $array = [];

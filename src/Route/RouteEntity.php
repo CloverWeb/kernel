@@ -1,6 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: Administrator
  * Date: 2017/7/23
  * Time: 14:36
@@ -13,7 +12,8 @@ use Joking\Kernel\Support\Entity;
 
 /**
  * Class RouteEntity
- * @property string middleware
+ * @property string[] middleware
+ * @property array params
  * @property string name
  * @property string method
  * @property mixed handle
