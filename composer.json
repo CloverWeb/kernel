@@ -20,10 +20,5 @@
     "nikic/fast-route": "v1.2.0",
     "filp/whoops": "2.1.9",
     "league/plates": "^3.0@dev"
-  },
-  "extra": {
-    "branch-alias": {
-      "v0.0.2": "v0.0.2"
-    }
   }
 }
