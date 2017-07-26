@@ -25,7 +25,7 @@ class HttpResponse extends Singleton {
     protected $isSent = false;              //是否已经发送
     protected $content;             //需要输出的内容
     protected $format;              //响应格式
-    protected $headers;             //需要输出的响应头
+    protected $headers = [];             //需要输出的响应头
     protected $params = [];         //渲染模板需要
 
     public function with($name, $value) {

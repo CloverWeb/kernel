@@ -41,7 +41,7 @@ class Kernel extends Singleton {
         //路由结果事件
         Event::current()->touch(new BeforeRouteEvent($routeResult));
 
-        return $handleResult = $this->handle($routeResult);
+        $handleResult = $this->handle($routeResult);
 
         return $this->response($handleResult);
     }
