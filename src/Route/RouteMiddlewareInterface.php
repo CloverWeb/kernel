@@ -9,9 +9,7 @@
 namespace Joking\Kernel\Route;
 
 
-use Joking\Kernel\Http\HttpRequest;
-
 interface RouteMiddlewareInterface {
 
-    public function handle(HttpRequest $request);
+    public function handle(RouteEntity $routeResult);
 }

@@ -50,7 +50,7 @@ class Kernel extends Singleton {
 
         //说明，中间件如果有返回值的话就直接输出了
         foreach ($routeResult->middleware as $middleware) {
-            $middlewareResult = RouteMiddleware::current()->execute($middleware);
+            $middlewareResult = RouteMiddleware::current()->execute($middleware, ['routeResult' => $routeResult]);
             if ($middlewareResult !== null) {
                 return $middlewareResult;
             }

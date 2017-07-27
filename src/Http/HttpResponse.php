@@ -53,6 +53,8 @@ class HttpResponse extends Singleton {
 
     public function xml($data = []) {
         $this->setRespondType(static::RESPONSE_XML);
+        $this->content = $data;
+        return $this;
     }
 
     /**
@@ -70,7 +72,7 @@ class HttpResponse extends Singleton {
         return $this;
     }
 
-    public function redirect($url) {
+    public function redirect($url, $params = []) {
 
     }
 
@@ -78,14 +80,22 @@ class HttpResponse extends Singleton {
      * 发送错误
      * @param $template
      * @param $status
+     * @return HttpResponse
      */
-    public function error($template, $status) {
+    public function error($template, $status = 422) {
+        $this->setStatusCode($status);
+        if (View::current()->templateExists($template)) {
+            $this->setRespondType(self::RESPONSE_HTML);
+            $this->content = View::current()->render($template);
+        }
 
+        return $this;
     }
 
     public function forward($routerName) {
         $fastRoute = new FastRoute();
         if ($entity = $fastRoute->getRoute($routerName)) {
+            $this->params = [];
             return Kernel::current()->handle($entity);
         }
 

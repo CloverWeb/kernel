@@ -44,15 +44,11 @@ class View extends Singleton {
             }
         }
 
-        foreach ($this->folders as $name => $folder) {
-            $this->templates->addFolder($name, $folder);
-        }
-
-        foreach ($this->functions as $name => $callback) {
-            $this->templates->registerFunction($name, $callback);
-        }
-
         return $this->templates->render($template, $this->params);
+    }
+
+    public function templateExists($template) {
+        return $this->templates->exists($template);
     }
 
     public function with($name, $value) {
@@ -86,7 +82,18 @@ class View extends Singleton {
 
     public function getTemplates() {
         if (isset($this->mainFolder)) {
-            return new Engine($this->mainFolder);
+
+            $templates = new Engine($this->mainFolder);
+
+            foreach ($this->folders as $name => $folder) {
+                $templates->addFolder($name, $folder);
+            }
+
+            foreach ($this->functions as $name => $callback) {
+                $templates->registerFunction($name, $callback);
+            }
+
+            return $templates;
         }
 
         throw new \Exception('没有设置视图的主目录');

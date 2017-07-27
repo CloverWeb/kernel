@@ -28,7 +28,7 @@ class RouteMiddleware extends Middleware {
         $middleware = Factory::instance($middleware);
 
         if ($middleware instanceof RouteMiddlewareInterface) {
-            return $middleware->handle(HttpRequest::current());
+            return $middleware->handle($params['routeResult']);
         }
     }
 }
