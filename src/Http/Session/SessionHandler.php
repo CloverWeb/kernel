@@ -10,6 +10,11 @@ namespace Joking\Kernel\Http\Session;
 
 class SessionHandler {
 
+    /**
+     * @param $name
+     * @param null $default
+     * @return mixed
+     */
     public function get($name, $default = null) {
         return $this->has($name) ? $_SESSION[$name]->value : $default;
     }

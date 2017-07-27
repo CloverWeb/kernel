@@ -8,26 +8,15 @@
 
 namespace Joking\Kernel\Http;
 
-
-use Joking\Kernel\Functions\Factory;
 use Joking\Kernel\Support\Singleton;
 
+/**
+ * Class HttpRequest
+ * @property HttpServer server
+ * @property HttpSession session
+ * @package Joking\Kernel\Http
+ */
 class HttpRequest extends Singleton {
-
-    public function __construct(HttpServer $server) {
-        $this->server = $server;
-        $this->session = HttpSession::current();
-    }
-
-    /**
-     * @var HttpServer
-     */
-    public $server;
-
-    /**
-     * @var HttpSession
-     */
-    public $session;
 
     /**
      * @param $name
@@ -89,5 +78,13 @@ class HttpRequest extends Singleton {
 
     public function file($name = null) {
         return $name ? $_FILES[$name] : $_FILES;
+    }
+
+    public function getServer() {
+        return new HttpServer();
+    }
+
+    public function getSession() {
+        return HttpSession::current();
     }
 }

@@ -66,12 +66,10 @@ class Kernel extends Singleton {
 
     protected function response($handleResult) {
         if ($handleResult instanceof HttpResponse) {
-            return $handleResult->send(HttpRequest::current());
+            return $handleResult->send();
         } else {
             HttpResponse::current()->setContent($handleResult);
-            return HttpResponse::current()->send(
-                HttpRequest::current()
-            );
+            return HttpResponse::current()->send();
         }
     }
 }

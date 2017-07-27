@@ -34,6 +34,11 @@ class HttpSession extends Singleton {
         }
     }
 
+    /**
+     * @param string $name
+     * @param mixed $default =null
+     * @return mixed
+     */
     public function get($name, $default = null) {
         $this->open();
 
@@ -44,6 +49,11 @@ class HttpSession extends Singleton {
         return $this->sessionHandler->get($stdClass->name, $default);
     }
 
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @param int $timeout
+     */
     public function add($name, $value, $timeout = 0) {
         $this->open();
 
@@ -53,6 +63,9 @@ class HttpSession extends Singleton {
         }
     }
 
+    /**
+     * @param string $name
+     */
     public function remove($name) {
         $this->open();
 
@@ -66,7 +79,7 @@ class HttpSession extends Singleton {
      * 设置session 的名称
      * @param $name
      */
-    public function setName($name) {
+    public function setSessionName($name) {
         session_name($name);
     }
 
@@ -74,7 +87,7 @@ class HttpSession extends Singleton {
      * 获取session的名称
      * @return string
      */
-    public function getName() {
+    public function getSessionName() {
         $this->open();
 
         return session_name();
@@ -97,6 +110,21 @@ class HttpSession extends Singleton {
         return session_id();
     }
 
+    /**
+     * @param $sessionInterceptor
+     */
+    public function registerInterceptor($sessionInterceptor) {
+        SessionInterceptor::current()->register($sessionInterceptor);
+    }
+
+    /**
+     * 执行已经定义的拦截器
+     * @param $handle
+     * @param $name
+     * @param mixed $value
+     * @param int $timeout
+     * @return \stdClass
+     */
     protected function intercept($handle, $name, $value = null, $timeout = 0) {
         $stdClass = new \stdClass();
         $stdClass->handle = $handle;

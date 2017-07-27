@@ -13,6 +13,7 @@ use Joking\Kernel\Support\Entity;
 /**
  * Class RouteEntity
  * @property string[] middleware
+ * @property string url
  * @property array params
  * @property string name
  * @property string method

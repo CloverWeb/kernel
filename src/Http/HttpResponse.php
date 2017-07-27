@@ -8,6 +8,7 @@
 
 namespace Joking\Kernel\Http;
 
+use Joking\Kernel\Functions\Facades\Request;
 use Joking\Kernel\Functions\View;
 use Joking\Kernel\Kernel;
 use Joking\Kernel\Route\FastRoute;
@@ -119,10 +120,9 @@ class HttpResponse extends Singleton {
 
     /**
      * 发送最终结果
-     * @param HttpRequest $request
      * @return string
      */
-    public function send(HttpRequest $request) {
+    public function send() {
         if (!$this->isSent) {
             $this->sendHeader();
             $this->isSent = true;
@@ -198,13 +198,22 @@ class HttpResponse extends Singleton {
             case self::RESPONSE_DOWNLOAD;
                 break;
             default :
-                if (is_string($this->content) || is_int($this->content)) {
-                    $this->setRespondType(self::RESPONSE_HTML);
-                    $this->setStatusCode(200);
-                    return $this->content;
-                }
+                $content = $this->autoResponse();
         }
 
         return $content;
+    }
+
+
+    protected function autoResponse() {
+        if (Request::isAjax()) {
+            if (is_array($this->content)) {
+                $this->setFormat(self::RESPONSE_JSON);
+                return $this->disposeContent();
+            }
+        }
+
+        $this->setFormat(self::RESPONSE_HTML);
+        return $this->disposeContent();
     }
 }
