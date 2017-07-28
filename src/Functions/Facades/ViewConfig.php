@@ -17,7 +17,7 @@ use \Joking\Kernel\Functions\View as BaseView;
 /**
  * Class ViewConfig
  *
- * @method static registerMainFolders(string $path)
+ * @method static registerMainFolder(string $path)
  * @method static registerFolders($name, string $path)
  * @method static registerFunction($functionName, \Closure $callback)
  * @method static registerMiddleware($name, string $middleware)

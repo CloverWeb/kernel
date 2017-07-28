@@ -63,7 +63,7 @@ class View extends Singleton {
         $this->folders[$name] = $path;
     }
 
-    public function registerMainFolders($path) {
+    public function registerMainFolder($path) {
         $this->mainFolder = $path;
     }
 
