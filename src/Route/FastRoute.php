@@ -22,6 +22,8 @@ class FastRoute {
      */
     protected static $routeCollector = [];
 
+    protected static $errorAction;
+
     public function dispatch($method, $url) {
         $dispatcher = simpleDispatcher(function (RouteCollector $route) {
             foreach (static::$routeCollector as $url => $entity) {
@@ -34,6 +36,11 @@ class FastRoute {
         if ($status == Dispatcher::FOUND) {
             $routeResult[0]->params = $routeResult[1];
             return $routeResult[0];
+        }
+
+        if (isset(static::$errorAction)) {
+            static::$errorAction->params = ['code' => $status == Dispatcher::NOT_FOUND ? 404 : 405];
+            return static::$errorAction;
         }
 
         throw new RouteException($status);
@@ -109,6 +116,16 @@ class FastRoute {
 
     public function put($url, $handle) {
         return $this->addRoute('PUT', $url, $handle);
+    }
+
+    public function errorAction($handle) {
+        $routeArray = [
+            'handle' => $handle,
+            'middleware' => [],
+            'params' => []
+        ];
+
+        static::$errorAction = Factory::instance(RouteEntity::class, ['parameters' => $routeArray]);
     }
 
     /**
