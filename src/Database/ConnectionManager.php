@@ -16,7 +16,7 @@ use Joking\Kernel\Support\Singleton;
  * Class ConnectionManager
  * @package Joking\Kernel\Database
  */
-class ConnectionManager {
+class ConnectionManager extends Singleton {
 
 
     public function __construct($config) {
@@ -31,6 +31,7 @@ class ConnectionManager {
      *  database=joking
      *  username=root
      *  password=root
+     *  option=[]
      * ]
      *
      * @var array
@@ -94,6 +95,12 @@ class ConnectionManager {
     }
 
     public function isCreated($name) {
-        return isset(static::$connections[$name]);
+        if (isset(static::$connections[$name])) {
+            if (static::$connections[$name] instanceof Connection) {
+                return !static::$connections[$name]->isClosed();
+            }
+        }
+
+        return false;
     }
 }
